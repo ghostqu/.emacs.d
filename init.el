@@ -1,4 +1,5 @@
 ;; load emacs 24's package system. Add MELPA repository.
+;;; Code:
 (when (>= emacs-major-version 24)
   (require 'package)
   (add-to-list
@@ -7,6 +8,7 @@
    '("melpa" . "http://stable.melpa.org/packages/") 
    ;; '("melpa" . "http://melpa.milkbox.net/packages/")
    t))
+(add-hook 'after-init-hook #'global-flycheck-mode)
 ;; load the package
 (add-to-list 'load-path (expand-file-name "~/.emacs.d/lisp"))
 
@@ -14,8 +16,12 @@
 
 ;; disable the tool bar
 (tool-bar-mode -1)
+
 ;; turn on highlighting current line
 (global-hl-line-mode 1)
+
+;; auto insert closing bracket
+(electric-pair-mode 1)
 
 ;; matching parenthesis highlight
 (progn
@@ -50,14 +56,27 @@
 ;;===========================================================================
 (require 'sr-speedbar)
 
-(custom-set-variables
- '(speedbar-show-unknown-files t)
-)
+(setq speedbar-show-unknown-files t)
+(setq sr-speedbar-right-side nil)
+(setq sr-speedbar-skip-other-window-p t)
+(setq sr-speedbar-max-width 10)
+(setq sr-speedbar-width-x 10)
 
-(custom-set-variables '(sr-speedbar-right-side nil)
-		      '(sr-speedbar-skip-other-window-p t)
-		      '(sr-speedbar-max-width 20)
-		      '(sr-speedbar-width-x 10))
 (global-set-key [f2] 'sr-speedbar-toggle)
 (global-set-key (kbd "s-r") 'sr-speedbar-refresh-toggle)
+
+;;===========================================================================
+;;flycheck-mode
+;;===========================================================================
+;;(require 'flycheck)
+(add-hook 'after-init-hook #'global-flycheck-mode)
+;;===========================================================================
+;;company-mode
+;;===========================================================================
+
+;;(require 'company)
+(add-hook 'after-init-hook 'global-company-mode) ;after-init-hook
+(global-set-key (kbd "M-/") 'company-complete-common-or-cycle)
+(setq company-idle-delay 0)
+
 
